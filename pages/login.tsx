@@ -2,8 +2,7 @@
 /** @jsx jsx */
 
 import { TextField, Avatar, Button, CssBaseline, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container, styled } from "@mui/material"
-import { ThemeProvider, css, jsx } from '@emotion/react'
-import { createTheme, } from '@mui/material/styles';
+import { css, jsx } from '@emotion/react'
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -52,7 +51,7 @@ const Login = () => {
                 <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-                ورود
+                Login
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -60,7 +59,7 @@ const Login = () => {
                     required
                     fullWidth
                     id="email"
-                    label="نام کاربری"
+                    label="User Name"
                     name="email"
                     autoComplete="email"
                     autoFocus
@@ -70,7 +69,7 @@ const Login = () => {
                     required
                     fullWidth
                     name="password"
-                    label="رمز عبور"
+                    label="Password"
                     type="password"
                     id="password"
                     autoComplete="current-password"
@@ -82,7 +81,7 @@ const Login = () => {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                 >
-                    ورود
+                    Login
                 </Button>
             </Box>
         </Box>
