@@ -1,9 +1,7 @@
 {
-  // other settings..
   "compilerOptions": {
-    // other compiler options...
     "esModuleInterop": true,
-    "module": "CommonJS", // "module": "CommonJS" should work too
+    "module": "CommonJS",
     "moduleResolution": "Node"
   },
   "include": ["/**/*.ts"],
