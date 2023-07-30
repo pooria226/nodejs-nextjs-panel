@@ -1,16 +1,17 @@
 import express from "express";
+import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 const app = express();
-const apiRoutes = require("./routes/api");
-require("dotenv").config();
+dotenv.config();
+// const apiRoutes = require("./routes/api");
 
 let DATABASE_URL: string = process.env.DATABASE_URL || "";
 
 class Application {
   constructor() {
-    this.setupExpressServer();
     this.setupMongoose();
+    this.setupExpressServer();
     this.setupRoutesAndMiddlewares();
   }
   setupRoutesAndMiddlewares() {
@@ -18,9 +19,8 @@ class Application {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(express.static("public"));
-    app.use("/api", apiRoutes);
+    // app.use("/api", apiRoutes);
   }
-
   setupMongoose() {
     mongoose
       .connect(DATABASE_URL)
@@ -31,7 +31,6 @@ class Application {
         console.error("db not connected", err);
       });
   }
-
   setupExpressServer() {
     const port = process.env.PORT || 3001;
     app.listen(port, () => {
