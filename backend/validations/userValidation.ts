@@ -36,7 +36,6 @@ export const storeValidator = (data: unknown) => {
       "date.empty": `The date of birth must be a date`,
     }),
     isActive: joi.boolean(),
-    isVerifyd: joi.boolean(),
   });
   const { error } = schema.validate(data, { abortEarly: false });
   const array: Array<errors> = [];
@@ -45,6 +44,44 @@ export const storeValidator = (data: unknown) => {
       array.push({
         key: item.path[0],
         message: item.message,
+      });
+    });
+  }
+  return array;
+};
+
+export const updateValidator = (data: unknown) => {
+  const schema = joi.object({
+    id: joi.string().required().messages({
+      "any.required": `id is required`,
+    }),
+    first_name: joi.string().messages({
+      "string.empty": `Fristname must be a string of letters`,
+      "string.base": `Fristname must be a string of letters`,
+    }),
+    last_name: joi.string().messages({
+      "string.empty": `Lastname must be a string of letters`,
+      "string.base": `Lastname must be a string of letters`,
+    }),
+    role: joi.string().messages({
+      "any.required": `Validity level is mandatory`,
+    }),
+    code_meli: joi.string().messages({
+      "string.empty": `The national code must be a string of letters`,
+    }),
+    date_of_birth: joi.date().messages({
+      "date.empty": `The date of birth must be a date`,
+    }),
+    isActive: joi.boolean(),
+  });
+
+  const { error } = schema.validate(data, { abortEarly: false });
+  const array: Array<errors> = [];
+  if (error) {
+    error.details.map((item: any) => {
+      array.push({
+        key: item?.path[0],
+        message: item?.message,
       });
     });
   }

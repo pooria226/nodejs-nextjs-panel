@@ -12,9 +12,26 @@ router.post("/login", userController.loginUser);
 router.get("/users", middlewares.authentication, userController.allUsers);
 //  @desc   Users Store
 //  @route  POST /
-router.post("/user/store", userController.storeUser);
+router.post(
+  "/user/store",
+  middlewares.authentication,
+  userController.storeUser
+);
+
+//  @desc   Users Update
+//  @route  PUT /
+router.put(
+  "/user/update/:id",
+  middlewares.authentication,
+  userController.updateUser
+);
+
 //  @desc   Users Delete
 //  @route  DELETE /
-router.delete("/user/:id", userController.deleteUser);
+router.delete(
+  "/user/:id",
+  middlewares.authentication,
+  userController.deleteUser
+);
 
 export const routes = router;

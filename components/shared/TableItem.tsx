@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { ReactNode, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import { css, jsx } from "@emotion/react";
 import {
   Button,
@@ -23,157 +23,18 @@ interface Column {
   format?: (value: number) => string;
 }
 
-const columns: readonly Column[] = [
-  { id: "fullname", label: "Full Name" },
-  { id: "email", label: "Email" },
-  {
-    id: "role",
-    label: "Role",
-  },
-  {
-    id: "action",
-    label: "Action",
-  },
-];
-
 interface Data {
-  fullname: string;
-  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
   role: string;
-  action: ReactNode;
+  _id: string;
 }
 
-function createData(
-  fullname: string,
-  email: string,
-  role: string,
-  action: ReactNode
-): Data {
-  return { fullname, email, role, action };
+interface Props {
+  data: Data[];
+  handleDelteUser(id: string): void;
 }
-
-const rows = [
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button color="error" variant="contained">
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button>
-      <DeleteIcon />
-    </Button>
-  ),
-  createData(
-    "Pooria Mohamamdi",
-    "pooria@gmail.com",
-    "Admin",
-    <Button>
-      <DeleteIcon />
-    </Button>
-  ),
-];
 
 const styles = css({
   button: {
@@ -192,7 +53,7 @@ const styles = css({
   },
 });
 
-export default function TableItem() {
+const TableItem: FC<Props> = ({ data = [], handleDelteUser }) => {
   const [page] = useState(0);
   const [rowsPerPage] = useState(10);
 
@@ -202,32 +63,38 @@ export default function TableItem() {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
+              <TableCell>Full Name</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Active</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return <TableCell key={column.id}>{value}</TableCell>;
-                    })}
-                  </TableRow>
-                );
-              })}
+            {data.map((item: Data, index: number) => {
+              return (
+                <TableRow key={index} hover role="checkbox" tabIndex={-1}>
+                  <TableCell>
+                    {item?.first_name + " " + item?.last_name}
+                  </TableCell>
+                  <TableCell>{item.phone}</TableCell>
+                  <TableCell>{item.role}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => handleDelteUser(item?._id)}
+                      color="error"
+                      variant="contained"
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
     </Paper>
   );
-}
+};
+
+export default TableItem;

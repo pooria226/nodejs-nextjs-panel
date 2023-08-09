@@ -19,7 +19,7 @@ const authentication = async (
 ) => {
   try {
     const authorizationValue: string | undefined = req.headers.authorization;
-    const token: string = authorizationValue?.split("Bearer ")[1] || "";
+    const token: string = authorizationValue?.split("Bearer ")[1]!;
     const result: any = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(result?.id);
     req.user = user;

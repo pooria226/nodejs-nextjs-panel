@@ -1,42 +1,25 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { css, jsx } from '@emotion/react'
-import DashboardLayout from '@/components/layouts/DashboardLayout';
-import TableItem from '@/components/shared/TableItem';
+import { jsx } from "@emotion/react";
+import DashboardLayout from "@/components/layouts/DashboardLayout";
+import TableItem from "@/components/shared/TableItem";
+import AuthenticatedLayout from "@/components/layouts/AuthenticatedLayout";
+import { useDeleteUserMutation, useGetUsersQuery } from "@/store/apiSlice";
+export default function Users() {
+  const { data } = useGetUsersQuery();
+  const [deleteUser, {}] = useDeleteUserMutation();
 
+  const handleDelteUser = async (id: string) => {
+    const result = await deleteUser({ id });
+    console.log(result);
+  };
 
-
-const styles = css({
-    '.MuiPaper-root': {
-        boxShadow: "0 0 0px",
-    },
-    '.wrapper-content': {
-        display: "flex",
-        nav: {
-            width: "260px",
-            paddingTop: 0,
-            a: {
-                color: 'black'
-            }
-        },
-        '.content': {
-            padding: 16,
-            background: "rgba(0, 0, 0, 0.04)",
-            width: "100%",
-            height: "calc(100vh - 80px)",
-            overflow: "hidden",
-        }
-    }
-})
-
-
-
-export default function Dashboard() {
-
-    return (
-        <DashboardLayout>
-            <TableItem />
-        </DashboardLayout>
-    );
+  return (
+    <AuthenticatedLayout>
+      <DashboardLayout>
+        <TableItem handleDelteUser={handleDelteUser} data={data?.data?.users} />
+      </DashboardLayout>
+    </AuthenticatedLayout>
+  );
 }

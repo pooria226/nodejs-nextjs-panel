@@ -1,93 +1,114 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { TextField, Avatar, Button, CssBaseline, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container, styled } from "@mui/material"
-import { css, jsx } from '@emotion/react'
-
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import {
+  TextField,
+  Avatar,
+  Button,
+  CssBaseline,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
+import { css, jsx } from "@emotion/react";
+import { useLoginMutation } from "@/store/apiSlice";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useState } from "react";
+import { useCookie } from "next-cookie";
+import { useRouter } from "next/router";
+import NotAuthenticatedLayout from "@/components/layouts/NotAuthenticatedLayout";
 
 const styles = css({
-    '.muirtl-binzgt': {
-        marginTop: "50%",
-        // transform:
-    }
-})
+  ".muirtl-binzgt": {
+    marginTop: "50%",
+    // transform:
+  },
+});
 
 const Login = () => {
+  // ***********************
+  // Import Hooks
+  // ***********************
+  const cookie = useCookie();
+  const router = useRouter();
+  const [loginMutation, { data }] = useLoginMutation();
+  // ***********************
+  // Define Function
+  // ***********************
 
-    function Copyright(props: any) {
-        return (
-            <Typography variant="body2" color="text.secondary" align="center" {...props}>
-                {'Copyright © '}
-                <Link color="inherit" href="https://mui.com/">
-                    Your Website
-                </Link>{' '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
-        );
-    }
+  const [inputs, setInputs] = useState({ phone: "", password: "" });
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+  // ***********************
+  // Define Function
+  // ***********************
 
-    return <Container css={styles} component="main" maxWidth="xs">
+  const handleLogin = async () => {
+    const result = await loginMutation(inputs).unwrap();
+    cookie.set("user", result?.data?.token, { path: "/" });
+    router.push("/");
+  };
+
+  return (
+    <NotAuthenticatedLayout>
+      <Container css={styles} component="main" maxWidth="xs">
         <CssBaseline />
+
         <Box
-            sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-                Login
-            </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="User Name"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                />
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+          <Box component="div" sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              fullWidth
+              id="phone"
+              label="phone"
+              name="phone"
+              onChange={(e) =>
+                setInputs((prev) => {
+                  return { ...prev, phone: e.target.value };
+                })
+              }
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              onChange={(e) =>
+                setInputs((prev) => {
+                  return { ...prev, password: e.target.value };
+                })
+              }
+            />
 
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                >
-                    Login
-                </Button>
-            </Box>
+            <Button
+              onClick={() => handleLogin()}
+              type="button"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Login
+            </Button>
+          </Box>
         </Box>
-    </Container>
-}
+      </Container>
+    </NotAuthenticatedLayout>
+  );
+};
 
-
-
-export default Login
+export default Login;

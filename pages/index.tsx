@@ -1,46 +1,37 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { css, jsx } from '@emotion/react'
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import SideBarItem from '@/components/shared/SideBarItem';
-import { AppBar } from '@mui/material';
-import DashboardLayout from '@/components/layouts/DashboardLayout';
-
-
+import { css, jsx } from "@emotion/react";
+import DashboardLayout from "@/components/layouts/DashboardLayout";
+import AuthenticatedLayout from "@/components/layouts/AuthenticatedLayout";
 
 const styles = css({
-  '.MuiPaper-root': {
+  ".MuiPaper-root": {
     boxShadow: "0 0 0px",
   },
-  '.wrapper-content': {
+  ".wrapper-content": {
     display: "flex",
     nav: {
       width: "260px",
       paddingTop: 0,
       a: {
-        color: 'black'
-      }
+        color: "black",
+      },
     },
-    '.content': {
+    ".content": {
       padding: 16,
       background: "rgba(0, 0, 0, 0.04)",
       width: "100%",
       height: "calc(100vh - 80px)",
       overflow: "hidden",
-    }
-  }
-})
-
-
+    },
+  },
+});
 
 export default function Dashboard() {
-
   return (
-    <DashboardLayout>
-
-    </DashboardLayout>
+    <AuthenticatedLayout>
+      <DashboardLayout>hi</DashboardLayout>
+    </AuthenticatedLayout>
   );
 }
